@@ -1,0 +1,5 @@
+__pycache__/
+*.pyc
+courses/*
+!courses/.gitkeep
+.runtime/

@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#203f35">
+  <title>Fieldnotes — Learning workspace</title>
+  <script src="/theme.js"></script>
+  <link rel="stylesheet" href="/styles.css">
+  <script src="/app.js" defer></script>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <aside class="sidebar">
+    <a class="brand" href="/" aria-label="Fieldnotes home"><span class="brand-mark" aria-hidden="true">✳</span><span>fieldnotes<span class="brand-sub">A SPACE TO KEEP LEARNING</span></span></a>
+    <div class="sidebar-caption">YOUR WORKSPACE</div>
+    <nav aria-label="Main navigation">
+      <a href="/" data-nav="journeys"><span aria-hidden="true">▦</span> Learning journeys</a>
+      <a href="/?view=reviews" data-nav="reviews"><span aria-hidden="true">↺</span> Review queue <span class="nav-count" id="review-count">0</span></a>
+    </nav>
+    <div class="sidebar-note"><span class="small-spark" aria-hidden="true">✳</span><p>Small steps.<br>Deeper understanding.</p><span>Your work stays with you, one learning journey at a time.</span></div>
+    <div class="workspace-label"><span class="online-dot"></span><div>Local workspace<small id="connection">Connecting…</small></div></div>
+  </aside>
+  <div class="workspace">
+    <header class="topbar"><a class="mobile-brand" href="/">✳ fieldnotes</a><span class="topbar-label">PERSONAL LEARNING SPACE</span><div class="topbar-right"><span id="today"></span><button class="theme-toggle" type="button" data-theme-toggle aria-label="Dark mode" aria-pressed="false" title="Switch to dark mode"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.8 13.1A9 9 0 0 1 10.9 3.2 9 9 0 1 0 20.8 13.1Z"/></svg><span class="theme-toggle-label">Dark mode</span></button><span class="avatar" aria-label="Personal workspace">You</span></div></header>
+    <main id="main" tabindex="-1"><div class="loading">Opening your workspace…</div></main>
+    <footer class="footer"><span>Learning is a journey. Your records keep the thread.</span><button class="text-button" id="workspace-info">How this workspace works ↗</button></footer>
+  </div>
+  <dialog id="dialog" aria-labelledby="dialog-title"><button class="dialog-close" aria-label="Close dialog">×</button><div id="dialog-content"></div></dialog>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+</body>
+</html>

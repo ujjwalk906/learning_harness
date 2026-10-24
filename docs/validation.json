@@ -1,0 +1,46 @@
+{
+  "checked_on": "2026-10-24",
+  "scope": "implementation and fictional QA, not learner assessment",
+  "python_tests": {
+    "passed": 46,
+    "platform": "Linux",
+    "python": "3.12.3"
+  },
+  "javascript_syntax": [
+    "web/app.js",
+    "web/activity.js",
+    "web/bridge.js"
+  ],
+  "skills_validated": [
+    "learning-guide",
+    "learning-research",
+    "learning-activity"
+  ],
+  "browser": {
+    "engine": "Edge",
+    "dashboard": true,
+    "search": true,
+    "course_views": true,
+    "review_handoff": true,
+    "new_unassessed_goal": true,
+    "custom_surface_draft_restore": true,
+    "help_capture": true,
+    "submission_return_handoff": true,
+    "fresh_cli_assessment": true,
+    "mobile_no_horizontal_overflow": true
+  },
+  "notebook": {
+    "authenticated_server": true,
+    "real_kernel_python_c_cpp_shell": "passed",
+    "editable_copy_preserved_original": "passed",
+    "no_learner_events_from_execution": true
+  },
+  "limits": [
+    "No live AI chat or model request in the new harness",
+    "No actual Android/Termux execution",
+    "POSIX only; Windows unsupported",
+    "No real learner pilot or retention study",
+    "No external reminders or automatic agent wakeup"
+  ],
+  "real_course_records_created": false
+}

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Learning Activity"
+  short_description: "Build a focused, resumable learning workbench"
+  default_prompt: "Use $learning-activity to create the next useful interaction for my learning journey."

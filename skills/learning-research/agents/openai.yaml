@@ -1,0 +1,4 @@
+interface:
+  display_name: "Learning Research"
+  short_description: "Ground a learning journey in inspected sources"
+  default_prompt: "Use $learning-research to inspect material for the next step in my learning goal."

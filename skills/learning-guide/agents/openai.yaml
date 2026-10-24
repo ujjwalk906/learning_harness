@@ -1,0 +1,4 @@
+interface:
+  display_name: "Learning Guide"
+  short_description: "Guide a persistent, evidence-based learning journey"
+  default_prompt: "Use $learning-guide to continue my learning from my saved goal, work and reviews."
