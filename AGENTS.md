@@ -1,5 +1,7 @@
 # Agent-guided learning workspace
 
+For installation or setup from a repository link, follow `INSTALL.md`.
+
 For learning, continuation or review, use `skills/learning-guide/SKILL.md`.
 The active conversation supplies instructional judgment. Executable tools provide
 records, source acquisition, activity publication, capture, projections and launch.

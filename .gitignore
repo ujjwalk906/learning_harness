@@ -3,3 +3,4 @@ __pycache__/
 courses/*
 !courses/.gitkeep
 .runtime/
+dist/

@@ -11,7 +11,29 @@ course, entrance examination, second model process or particular surface is requ
 
 ## Enter or resume
 
-Locate the shared harness folder containing `learn.py`. Commands run from it;
+Find `learn.py` beside this installed skill's `SKILL.md`. In a source checkout it
+is at the repository root, two folders above `skills/learning-guide/`. Resolve
+paths from the skill's actual location, not the conversation's working directory.
+Use an absolute script path or run commands from that harness folder.
+If only these instructions were downloaded without `learn.py` and `harness_core/`,
+the installation is incomplete: follow the repository's `INSTALL.md` to install
+the complete bundle. Do not invent missing commands or claim setup succeeded.
+
+Run `python3 learn.py doctor` before first use. The installed bundle defaults to
+`~/Fieldnotes/courses`; a source checkout defaults to its own `courses/`.
+`FIELDNOTES_HOME` overrides the installed bundle's data parent. Both agents can
+use the same folder; read current state before writing. In a temporary/cloud
+environment, explain where the files live and help the learner download their
+course folders before the session ends. An installation in that environment does
+not install anything on the learner's computer or guarantee cross-session storage.
+
+Handle setup and tool commands for the learner. Explain the next learning step
+in ordinary language, and reuse an already stated goal. When a dashboard is useful,
+start the server, verify it responds, and provide the reachable link. A remote
+agent's loopback URL is not reachable from the learner's computer without a
+supported port preview. If none is available, teach and capture work in the
+conversation using chat activities. Never require the dashboard to begin learning.
+
 `--courses /absolute/course-parent` selects moved or external course folders.
 Start with `python3 learn.py list` and `python3 learn.py resume COURSE`. Use the
 conversation to select the goal; ask only if it is ambiguous. Retrieve exact

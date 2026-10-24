@@ -1,11 +1,42 @@
 # Fieldnotes: an agent-guided learning harness
 
-An evolving learning workspace: the active agent discovers the goal, researches,
-teaches, diagnoses and chooses the next purpose. Shared Python tools preserve
-course-local records, publish interaction surfaces, capture actual work and supply
-a dashboard. There is no requirement to generate a whole course before learning.
+A personal learning workspace for Claude and ChatGPT agents. Tell your agent what
+you want to learn; it helps you get started, teaches, creates useful activities and
+saves your work so you can continue later. You do not need to plan a whole course.
 
-## Start
+## Start without technical setup
+
+Copy this into **Claude Code, Codex, or a ChatGPT agent with file and Python access**:
+
+> Install and use Fieldnotes from https://github.com/ujjwalk906/learning_harness.
+> Read INSTALL.md and handle the setup for me. Keep my learning records so I can
+> continue later. I want to learn: [describe your goal].
+
+The agent handles the commands. After setup, say **“Continue my learning”**.
+Claude Code and Codex share saved work in `~/Fieldnotes/courses` by default.
+No API keys or required Python packages are needed; your agent account and its
+normal usage limits still apply.
+
+| Where you use your agent | How to get started |
+| --- | --- |
+| Claude Code on your computer | Give it the prompt above; it runs the installer for Claude. |
+| Codex on your computer | Give it the prompt above; it runs the installer for Codex. |
+| ChatGPT desktop with Work/plugins | Ask a local file-capable agent to follow the ChatGPT desktop setup in [INSTALL.md](INSTALL.md), then install **Fieldnotes** from your personal plugin source. |
+| Claude browser chat or Cowork | Upload the complete **learning-guide.zip** using Claude's skill controls. [Get or build the ZIP](INSTALL.md#claude-in-the-browser-or-cowork). |
+| A hosted agent with Python/files | Give it the prompt above; it can use the tools in its workspace. Download your course folders if its storage is temporary. |
+| A chat that can only read links | It can read the instructions, but needs a file-capable environment or supported skill upload to run and save your work. |
+
+The repo link is the starting point; installation depends on the tools your agent
+can actually use. The agent will explain any storage or app limitation. The
+dashboard is optional: you can learn and submit work directly in the conversation.
+
+For agents: **[INSTALL.md](INSTALL.md)** is the setup contract. It covers installation,
+verification, updates, existing courses and first use. The installer packages the
+guide, research/activity workflows, Python tools and dashboard together, without
+personal courses. [Releases](https://github.com/ujjwalk906/learning_harness/releases)
+will contain uploadable ZIPs once a maintainer publishes a release.
+
+## Run from a checkout
 
 Python 3.11+ on Linux/macOS is sufficient for the tools and dashboard; there are
 no required packages, API keys, model jobs or build step. File locking uses POSIX
@@ -17,8 +48,8 @@ python3 learn.py serve
 ```
 
 Open **http://127.0.0.1:8780**. The default `courses/` starts empty. Create a journey
-there or tell the agent your learning goal. Opening this folder in an agent session
-loads AGENTS.md, which points to `skills/learning-guide/SKILL.md`. You can explicitly
+there or tell the agent your learning goal. Opening this folder in Codex loads
+AGENTS.md; Claude Code reads CLAUDE.md. Both point to the learning workflow. You can explicitly
 ask it to read that file. No global skill installation or configuration is required.
 
 Example learner request (not a command to assess the developer):

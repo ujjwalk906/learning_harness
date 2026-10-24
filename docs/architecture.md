@@ -54,6 +54,17 @@ They require a compatible shared harness (version recorded in course.json), and
 optional runtime dependencies are separately installed. The current version uses
 POSIX locking. Explicit migration will be needed if future schemas change.
 
+`install.py` builds a single self-contained learning-guide skill from an explicit
+allowlist. It includes the shared Python runtime, web assets, tool contracts and
+companion workflows as references. Packaged `learn.py` uses
+`scripts/installed_learn.py`, keeping course data in `~/Fieldnotes/courses` (or a
+selected external data folder) instead of replaceable skill/plugin code. Source
+checkout defaults remain unchanged. Both local agent installs and the portable
+ZIP use this payload. The ChatGPT desktop target wraps it in a portable plugin
+and merges a personal marketplace entry; enabling the plugin remains an app action.
+No installation step creates learner evidence or starts a model. Updates preflight
+ownership and data separation, smoke-check staged code, then replace installed code.
+
 Author checks, fictional demonstrations and harness development do not authorize
 assessment of the developer. Keep QA state in temporary directories, and use
 COURSE_AUTHOR_QA=1 for execution checks that must reject learner writes. No actual
