@@ -58,6 +58,11 @@ Read the mission, relevant exact evidence, pending submissions, checkpoint and d
 reviews. Respect a requested topic or direct explanation. Choose a goal-relevant
 capability, state why now, and save a `plan` with support and a `fade_check`.
 
+Distinguish predicting a result or recognizing a pattern, carrying out a procedure,
+and explaining how the operation produces its result. Success in one leaves the
+others open. Reported familiarity may still need a brief, local refresh; do not
+infer a broad prerequisite deficit from difficulty with one example.
+
 Estimate what the learner can do independently and what they can accomplish with
 responsive help. Keep these judgments specific and tentative. If unknown, use a
 brief probe. Adjust support as well as task difficulty. A targeted hint may reveal
@@ -75,8 +80,36 @@ when needed for a meaningful prediction. Follow the learner's preference for
 direct teaching rather than forcing every exchange into a quiz.
 
 Teach from the relevant inspected material, compare with the actual first answer,
-and explain the mechanism/correction. Invite a focused self-explanation when it
-would help. Use guided practice, then a supplied fresh task with less support.
+and explain the mechanism/correction. When the learner cannot trace an operation,
+start with the smallest meaningful case. Connect its inputs, actions and result
+before adding repetition, aggregation or abstraction. When changing representation
+(example, diagram, notation, code), explicitly map corresponding parts and explain
+changes in orientation, ordering or terminology. Keep the same case while making
+that connection so the learner can follow what stays the same.
+
+For guided practice, demonstrate enough to make the next action possible, then
+leave a meaningful step for the learner before revealing the rest. This might be
+one calculation, a sentence revision or the next step in a process. Respond to the
+actual attempt; if the learner goes further successfully, reduce support rather
+than making them repeat every small step. A complete worked explanation remains
+appropriate when requested; do not make participation a condition of receiving it.
+
+When the learner cannot visualize a mechanism, offer a representation that makes
+the relevant relationships visible and connect it to a short learner action.
+A static sketch, physical analogy or annotated example may suffice. Use animation
+when change or movement clarifies the mechanism, with learner-controlled pacing;
+watching it is supported instruction, not evidence of understanding.
+
+If the learner reports increased confusion, narrow the explanation to the unresolved
+step and reduce simultaneous concepts or representations. For a broad question
+arising from that confusion, give a brief orientation and offer further detail
+without introducing a catalogue of related topics. Check whether the smaller
+explanation helps before expanding again.
+
+Use a focused self-explanation or a fresh task with less support when useful.
+Choose the task to distinguish reconstructing the mechanism from repeating a
+shortcut in the worked example. Preserve the help given; immediate supported
+success and the learner's report that it makes sense do not establish retention.
 Use [learning-activity](../learning-activity/SKILL.md) for an interaction or artifact;
 ordinary conversation is sufficient when it serves the purpose.
 
@@ -91,7 +124,7 @@ previously encountered capabilities when choosing the method is itself useful.
 Transfer changes a meaningful constraint, context or representation. New numbers
 alone are boundary practice. Physical skills require actual performance evidence.
 
-Use `schedule` to save a concrete retrieval prompt and date when justified.
+Use `record COURSE schedule FILE` to save a concrete retrieval prompt and date when justified.
 Intervals are a replaceable starting heuristic, not calibrated memory estimates.
 Consult due reviews on return, prioritizing relevance and user choice. Immediate
 repeats do not establish delayed retention. Do not defer an existing review using

@@ -16,6 +16,14 @@ working place to respond. Teach the prerequisites needed to perform the task;
 an optional low-stakes pretest may precede teaching. Label supplied orchestration
 and environment boundaries. A model is not execution of the modeled mechanism.
 
+Give a visual a specific learner action, such as tracing a dependency, predicting
+a change or constructing the next result. For guided practice, reveal worked steps
+progressively and leave a meaningful part to complete; avoid showing all results
+elsewhere on the page before that attempt. Use animation when movement or change
+clarifies the mechanism, with pause and step controls. A static representation or
+complete demonstration is appropriate when it better serves the requested purpose.
+Preserve which worked steps and hints were actually displayed as help.
+
 Create activity files under the course's drafts/ or a temporary authoring folder,
 then publish a snapshot using `learn.py publish COURSE SPEC.json --artifact PATH`.
 PATH is a single file or a directory containing the declared entrypoint. Reusing
