@@ -38,9 +38,8 @@ will contain uploadable ZIPs once a maintainer publishes a release.
 
 ## Run from a checkout
 
-Python 3.11+ on Linux/macOS is sufficient for the tools and dashboard; there are
-no required packages, API keys, model jobs or build step. File locking uses POSIX
-`fcntl`. Windows is not supported by this first version.
+Python 3.11+ on Windows/Linux/macOS is sufficient for the tools and dashboard; there are
+no required packages, API keys, model jobs or build step. File locking uses native advisory locks on Windows and POSIX systems.
 
 ```sh
 cd learning_harness
@@ -123,6 +122,18 @@ are no external reminders. Scope revisions remain visible and historical evidenc
 survives graph changes.
 
 ## Learning surfaces
+
+The learning guide includes fresh topic checks, mixed practice, delayed recall and
+timed practice where useful. Exact questions are published before formal attempts;
+answers, shown help and criterion feedback remain separate. Coverage reports track
+introduced/practised objectives independently of assessed ability. Explicit study
+budgets retain priorities and deferred labs. `resume` also shows operational
+repairs, including failed chat publications that can be retried after access returns.
+
+Use `record COURSE session FILE` to save a connected literal exchange and its
+separate checkpoint in one idempotent journal event. See the contracts for session,
+coverage, budget and repair records. Existing courses need no source-record edits;
+their coverage stays unreported until explicitly recorded with supporting evidence.
 
 HTML, Markdown, notebook v4, text, PDFs, images, audio and video are supported.
 Each activity has a persistent response/attachment/assistance panel. Custom HTML

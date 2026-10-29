@@ -27,6 +27,13 @@ environment, explain where the files live and help the learner download their
 course folders before the session ends. An installation in that environment does
 not install anything on the learner's computer or guarantee cross-session storage.
 
+Doctor reports available tools; it does not prove that references can be read or
+activities can be published. Read the contracts and run `list` in the actual
+learning session. If access fails, preserve literal exchanges separately from
+summaries and state what was not saved. After access returns, inspect `resume`
+for open repairs and retry the failed operation before declaring setup restored.
+Never change machine permissions or agent configuration merely to teach a lesson.
+
 Handle setup and tool commands for the learner. Explain the next learning step
 in ordinary language, and reuse an already stated goal. When a dashboard is useful,
 start the server, verify it responds, and provide the reachable link. A remote
@@ -52,6 +59,18 @@ Inspect relevant sections and build a provisional graph only as far as useful.
 Keep required capabilities separate from evidence about this learner. Record why
 prerequisites are needed; topical association alone is not a dependency.
 
+Keep the graph aligned with the objectives actually being taught. For a broad
+exam or deadline, map the published objectives before reporting overall coverage;
+expand detail only as needed. Save `coverage` reports linked to real exchanges.
+Use `resume` to distinguish introduced/practised topics, assessed attempts,
+independent evidence, due recall, and blocked labs. A coverage report never grants
+competence. Do not manufacture a completion percentage from an incomplete graph.
+
+When time is constrained, save a `budget` with the learner's remaining study-time
+estimate, deadline, priorities and deferred work. Revisit it at session boundaries,
+after a blocked lab or when coverage lags. Compare remaining objectives with time,
+offer a concrete tradeoff, and let the learner choose scope, pace or date.
+
 ## Choose the next useful purpose
 
 Read the mission, relevant exact evidence, pending submissions, checkpoint and due
@@ -70,6 +89,11 @@ the useful next step; no progress despite help can justify teaching a prerequisi
 Tool failures, ambiguous prompts or language barriers are not concept failures.
 Fade support as performance warrants, then check a fresh task with less help.
 Do not calculate a global ZPD score or keep someone in repetitive checkpoints.
+
+If a lab is blocked, offer a local fixture, request/response trace, code repair,
+policy inspection or architecture decision with a concrete learner output. Name
+the skill this checks and what still requires live execution; keep the lab
+deferred and visible rather than counting the substitute as cloud execution.
 
 ## Teach, then revisit
 
@@ -118,6 +142,13 @@ question/criteria with `publish COURSE SPEC.json --chat` before asking it, then
 save the actual response using `submit`. No browser visit is needed. An ordinary
 explanation can remain a conversation observation without formal assessment.
 
+Read [testing and feedback](references/testing.md) when planning checks, topic
+transitions, mixed practice or readiness testing. Use short fresh checks after a
+useful topic group, later interleave earlier topics, and offer timed practice when
+the goal calls for it. Adapt cadence to the learner; "next" can defer a check
+without establishing success. Do not let a long run of explanations silently
+replace all testing. Use the published criteria to give precise partial credit.
+
 Build retrieval into continuation: invite reconstruction before reopening notes,
 then provide corrective feedback and targeted practice. Interleave related,
 previously encountered capabilities when choosing the method is itself useful.
@@ -126,6 +157,11 @@ alone are boundary practice. Physical skills require actual performance evidence
 
 Use `record COURSE schedule FILE` to save a concrete retrieval prompt and date when justified.
 Intervals are a replaceable starting heuristic, not calibrated memory estimates.
+When the learner says "review this later", save a specific reconstruction prompt
+with `record ... schedule`, then inspect `resume` and confirm the effective date
+and prompt. A checkpoint mention alone is not a scheduled review. If saving fails,
+say so and leave an open `repair`; retry when access returns. Do not claim a review
+is complete or advance its date from a conversational acknowledgment.
 Consult due reviews on return, prioritizing relevance and user choice. Immediate
 repeats do not establish delayed retention. Do not defer an existing review using
 `learner_override` unless the learner actually asked to move it. No external
@@ -134,6 +170,13 @@ reminders or automatic agent wakeup are implied by a due date or web submission.
 ## Interpret actual evidence
 
 Record substantive learner-visible exchanges as literal `observation` events.
+For a connected exchange, `record COURSE session FILE` saves ordered observations
+and a separate checkpoint in one immutable event with a retry identity. Include
+the exact question, actual help and literal answer, retaining spelling and
+uncertainty. Summaries belong in checkpoints, never in learner observations.
+Read the session contract before using it; do not include hidden reasoning or
+shell logs. Batch at a useful boundary rather than issuing several commands for
+every short message. Inspect `resume` after saving or recovering a failed save.
 Keep private reasoning, tool chatter and invented responses out. Raw observations,
 submissions, assessment judgments and next-step plans are separate records.
 

@@ -7,11 +7,11 @@ import json
 from pathlib import Path
 import re
 import shutil
-import tempfile
 import uuid
 
 from .engine import activity_key, require
 from .store import Invalid, atomic_json, identity, safe_path, text
+from .filesystem import staging_directory
 
 SURFACES = {".html": "html", ".htm": "html", ".md": "markdown", ".ipynb": "notebook",
             ".txt": "text", ".pdf": "pdf", ".mp3": "audio", ".wav": "audio", ".ogg": "audio",
@@ -19,6 +19,38 @@ SURFACES = {".html": "html", ".htm": "html", ".md": "markdown", ".ipynb": "noteb
 
 
 def publish(harness, course, specification, artifact=None, *, activity_id=None):
+    try:
+        return _publish(harness, course, specification, artifact, activity_id=activity_id)
+    except OSError as exc:
+        # Only save executable retries for chat tasks: external asset bytes may change.
+        repair_id = "publish-" + uuid.uuid4().hex[:16]
+        repair = {"id": repair_id, "status": "open", "operation": "publish-chat" if artifact is None else "publish-assets",
+            "detail": str(exc), "next_action": "Repair access, then retry the saved chat specification." if artifact is None else
+                "Repair access and inspect the original assets before publishing again.", "evidence_ids": []}
+        if artifact is None:
+            repair.update(specification=specification, activity_id=activity_id or "a_" + uuid.uuid4().hex[:12])
+        try:
+            harness.record(course, "repair", repair)
+        except (OSError, Invalid):
+            raise OSError(f"Publication failed: {exc}. Repair record could not be saved. Preserve the original specification and literal exchange; do not claim publication.") from exc
+        raise OSError(f"Publication failed: {exc}. Recovery saved as {repair_id}; inspect resume before retrying.") from exc
+
+
+def retry_publication(harness, course, repair_id):
+    repair = next((r for r in harness.state(course)["repairs"] if r["id"] == repair_id), None)
+    require(repair is not None and repair["operation"] == "publish-chat", "Select a saved chat-publication repair")
+    if repair["status"] == "resolved":
+        return {"repair_id": repair_id, "status": "resolved", "evidence_ids": repair["evidence_ids"]}
+    # Reuse the exact matching activity under the publication lock on recovery.
+    result = _publish(harness, course, repair["specification"], activity_id=repair["activity_id"], reuse_matching=True)
+    payload = {k: v for k, v in repair.items() if k != "event_id"}
+    payload.update(status="resolved", evidence_ids=[result["event_id"]],
+                   next_action="Ask the newly published task for a fresh attempt; earlier conversation remains an observation.")
+    harness.record(course, "repair", payload)
+    return result
+
+
+def _publish(harness, course, specification, artifact=None, *, activity_id=None, reuse_matching=False):
     require(isinstance(specification, dict), "Activity specification must be an object")
     specification = json.loads(json.dumps(specification, allow_nan=False))
     source = Path(artifact).expanduser().absolute() if artifact is not None else None
@@ -31,6 +63,12 @@ def publish(harness, course, specification, artifact=None, *, activity_id=None):
         aid = activity_id or "a_" + uuid.uuid4().hex[:12]
         identity(aid)
         versions = [a for a in state["activities"].values() if a["id"] == aid]
+        if reuse_matching:
+            matching = [e for e in harness.store.events(course) if e["type"] == "activity"
+                        and e["payload"]["id"] == aid
+                        and all(e["payload"].get(k) == v for k, v in specification.items())]
+            if matching:
+                return {"activity": activity_key(matching[-1]["payload"]), "event_id": matching[-1]["id"]}
         version = f"v{len(versions) + 1:03d}"
         root = harness.store.root(course)
         from .sources import verify
@@ -39,7 +77,7 @@ def publish(harness, course, specification, artifact=None, *, activity_id=None):
         target = safe_path(root, f"activities/{aid}/{version}")
         require(not target.exists(), "Activity version already exists; never overwrite a published activity")
         parent = safe_path(root, "activities")
-        with tempfile.TemporaryDirectory(prefix=".publish-", dir=parent) as temporary:
+        with staging_directory(parent, ".publish-") as temporary:
             stage = Path(temporary) / "content"
             stage.mkdir()
             if source is None:
@@ -82,8 +120,13 @@ def publish(harness, course, specification, artifact=None, *, activity_id=None):
             except BaseException:
                 shutil.rmtree(target)
                 raise
-        harness._snapshot(course)
+        warning = None
+        try:
+            harness._snapshot(course)
+        except OSError as exc:
+            warning = f"Publication committed; rebuild disposable projections after repairing access: {exc}"
         return {"activity": activity_key(specification), "event_id": event["id"],
+                "warning": warning,
                 "path": str(target), "url_path": f"/activity/{course}/{aid}/{version}"}
 
 

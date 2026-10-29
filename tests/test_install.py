@@ -19,7 +19,7 @@ class InstallationTests(unittest.TestCase):
     def setUp(self):
         self.temp = tempfile.TemporaryDirectory(prefix="fieldnotes-fictional-install-")
         self.addCleanup(self.temp.cleanup)
-        self.root = Path(self.temp.name)
+        self.root = Path(self.temp.name).resolve()
         self.data = self.root / "Fictional learning records"
         self.skills = self.root / "agent skills"
         self.skill = self.skills / "learning-guide"
@@ -29,7 +29,7 @@ class InstallationTests(unittest.TestCase):
 
     def command(self, *args, success=True, env=None):
         result = subprocess.run([sys.executable, *map(str, args)], cwd=self.root,
-                                env=env or self.env, capture_output=True, text=True, timeout=30)
+                                env=env or self.env, capture_output=True, text=True, encoding="utf-8", timeout=30)
         self.assertEqual(result.returncode == 0, success, result.stdout + result.stderr)
         return result
 
@@ -62,7 +62,7 @@ class InstallationTests(unittest.TestCase):
         note = self.skill / "personal.txt"
         note.write_text("unrelated skill", encoding="utf-8")
         self.install("--update", success=False)
-        self.assertEqual(note.read_text(), "unrelated skill")
+        self.assertEqual(note.read_text(encoding="utf-8"), "unrelated skill")
         note.unlink()
         self.skill.rmdir()
         self.command(ROOT / "install.py", "--target", "codex", "--skills-dir", self.skills,
@@ -93,8 +93,8 @@ class InstallationTests(unittest.TestCase):
             self.assertIsNone(json.loads(archive.read("learning-guide/fieldnotes.json"))["data_dir"])
             archive.extractall(self.root / "extracted")
         bundle = self.root / "extracted/learning-guide"
-        for relative in ["SKILL.md", "references/contracts.md", "references/learning-activity.md", "references/learning-research.md"]:
-            text = (bundle / relative).read_text()
+        for relative in ["SKILL.md", "references/contracts.md", "references/learning-activity.md", "references/learning-research.md", "references/testing.md"]:
+            text = (bundle / relative).read_text(encoding="utf-8")
             for target in re.findall(r"\]\(([^)]+)\)", text):
                 if "://" not in target:
                     self.assertTrue(((bundle / relative).parent / target).is_file(), target)
@@ -126,15 +126,15 @@ class InstallationTests(unittest.TestCase):
         catalog_path.write_text(json.dumps(existing), encoding="utf-8")
         args = [ROOT / "install.py", "--target", "chatgpt", "--marketplace-root", home, "--data-dir", self.data]
         self.command(*args)
-        catalog = json.loads(catalog_path.read_text())
+        catalog = json.loads(catalog_path.read_text(encoding="utf-8"))
         self.assertEqual(catalog["plugins"][0], existing["plugins"][0])
         self.assertEqual(catalog["custom"], "preserve")
         plugin = home / catalog["plugins"][1]["source"]["path"]
-        manifest = json.loads((plugin / "plugin.json").read_text())
+        manifest = json.loads((plugin / "plugin.json").read_text(encoding="utf-8"))
         self.assertTrue((plugin / manifest["extensions"]["com.openai"]["onboardingSkill"]).is_file())
         self.command(plugin / "skills/learning-guide/learn.py", "doctor")
         self.command(*args, "--update")
-        self.assertEqual(len(json.loads(catalog_path.read_text())["plugins"]), 2)
+        self.assertEqual(len(json.loads(catalog_path.read_text(encoding="utf-8"))["plugins"]), 2)
         self.assertFalse(self.data.exists())
 
     def test_invalid_marketplace_is_left_untouched_before_install(self):
@@ -143,5 +143,5 @@ class InstallationTests(unittest.TestCase):
         catalog_path.parent.mkdir(parents=True)
         catalog_path.write_text('{"plugins": false}', encoding="utf-8")
         self.command(ROOT / "install.py", "--target", "chatgpt", "--marketplace-root", home, success=False)
-        self.assertEqual(catalog_path.read_text(), '{"plugins": false}')
+        self.assertEqual(catalog_path.read_text(encoding="utf-8"), '{"plugins": false}')
         self.assertFalse((home / ".codex/plugins").exists())

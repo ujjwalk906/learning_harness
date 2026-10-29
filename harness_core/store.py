@@ -3,13 +3,14 @@ from __future__ import annotations
 
 from contextlib import contextmanager
 from datetime import datetime, timezone
-import fcntl
 import hashlib
 import json
 import os
 from pathlib import Path, PureWindowsPath
 import re
 import uuid
+
+from .locking import file_lock
 
 
 class Invalid(ValueError):
@@ -109,12 +110,8 @@ class Store:
     @contextmanager
     def locked(self, course):
         self.config(course)
-        with safe_path(self.root(course), ".lock").open("a") as stream:
-            fcntl.flock(stream, fcntl.LOCK_EX)
-            try:
-                yield
-            finally:
-                fcntl.flock(stream, fcntl.LOCK_UN)
+        with file_lock(safe_path(self.root(course), ".lock")):
+            yield
 
     def events(self, course):
         config = self.config(course)

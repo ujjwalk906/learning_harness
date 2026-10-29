@@ -48,6 +48,60 @@ checkpoint, due reviews, recent observations, pending submissions and exact curr
 activity. `evidence COURSE ID` retrieves raw historical events and artifact bytes.
 `state/current.json` and RESUME.md can be regenerated with `rebuild COURSE`.
 
+## Coverage, time and operational repairs
+
+Use `record COURSE coverage FILE` with `{concept_ids: [id], stage:
+'introduced'|'practised', reason, evidence_ids: [existing-event-id]}`. This is a
+tutor coverage report tied to saved exchanges, not an assessment. `resume` and
+the dashboard expose it separately from actual submissions, checked criteria,
+independent evidence and scheduled reviews. Add newly taught objectives to the
+graph before recording them; do not map unrelated topics to a convenient old ID.
+
+Budget: `{remaining_minutes: nonnegative-integer, deadline: timezone-aware-ISO8601,
+priorities: [text], deferred: [text], reason}`. These are explicit planning
+estimates, not automatically measured study time. Update after discussing actual
+availability and scope; retain permission-blocked labs in deferred work.
+
+Repair: `{id, status: 'open'|'resolved'|'deferred', operation, detail, next_action,
+evidence_ids: [existing-event-id]}`. A resolved repair needs evidence IDs supporting
+the successful operation. `resume` reports unresolved repairs; inspect them after
+access returns. Chat publication I/O failures automatically attempt to save an
+open repair with the exact specification and activity ID. Run
+`retry-publication COURSE REPAIR_ID` once after fixing access; retries reuse a
+committed matching publication if the repair's final save previously failed.
+Review changed asset bundles manually before retrying asset publication. If the
+journal itself is blocked, no repair record can be promised; preserve recovery
+files separately. A warning that publication committed but projection rebuilding
+failed means keep the returned identity and run `rebuild`, not publish again.
+
+## One-save conversation capture
+
+`record COURSE session FILE --expected-revision HASH` accepts:
+
+```json
+{
+  "client_id": "unique-stable-exchange-id",
+  "records": [
+    {"kind": "observation", "payload": {"role": "assistant", "kind": "conversation", "text": "Exact learner-visible question"}},
+    {"kind": "observation", "payload": {"role": "user", "kind": "conversation", "text": "Exact actual answer, unchanged"}},
+    {"kind": "checkpoint", "payload": {"summary": "Separate tutor interpretation", "next_action": "Concrete continuation"}}
+  ]
+}
+```
+
+Session records may be observations, checkpoints, schedules, coverage reports,
+budgets or repairs. All are validated before one journal event is appended; an
+invalid part writes nothing. Graph and referenced evidence must already exist.
+Reusing a client ID with identical content returns the original event; changed
+content is rejected. After an uncertain save, retry the same input and identity.
+Rebuildable projections expose the nested records, retaining the parent event ID
+for exact retrieval with `evidence`. This operation never creates a submission or
+assessment. Activity-linked help retains its effect on later submissions.
+
+After scheduling (alone or within a session), inspect `resume` for the effective
+prompt and date before confirming it to the learner. An existing earlier review
+may take precedence over the requested date. A checkpoint is not a queue entry.
+
 ## Activities and actual submissions
 
 Read the companion learning-activity skill before publishing. The returned identity

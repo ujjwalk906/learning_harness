@@ -113,7 +113,7 @@ class RecordTests(Fixture):
     def test_cannot_escape_course_or_use_symlink(self):
         with self.assertRaises(Invalid):
             self.h.create("../escape", "Bad", "Bad")
-        (self.h.store.courses / "linked").symlink_to(self.h.store.root("fictional"), target_is_directory=True)
+        self.symlink(self.h.store.courses / "linked", self.h.store.root("fictional"), target_is_directory=True)
         with self.assertRaises(Invalid):
             self.h.state("linked")
 

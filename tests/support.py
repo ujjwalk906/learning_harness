@@ -9,6 +9,14 @@ from harness_core.engine import Harness
 
 
 class Fixture(unittest.TestCase):
+    def symlink(self, path, target, **kwargs):
+        try:
+            path.symlink_to(target, **kwargs)
+        except OSError as exc:
+            if getattr(exc, "winerror", None) == 1314:
+                self.skipTest("Windows account lacks symbolic-link creation privilege")
+            raise
+
     def setUp(self):
         self.temp = tempfile.TemporaryDirectory(prefix="fieldnotes-fictional-")
         self.addCleanup(self.temp.cleanup)
