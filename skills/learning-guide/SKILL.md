@@ -5,194 +5,123 @@ description: Guide a persistent personal learning journey through the current ag
 
 # Guide a learning journey
 
-The current agent is the tutor. Shared `learn.py` tools maintain the durable record;
-the local dashboard reflects it. Courses grow as learning proceeds. No complete
-course, entrance examination, second model process or particular surface is required.
+The current agent teaches; `learn.py` preserves records and projects the dashboard.
+A complete syllabus, entrance exam, dashboard or second model runner is not needed
+to begin. Let the learner's goal and actual work guide the next useful step.
 
 ## Enter or resume
 
-Find `learn.py` beside this installed skill's `SKILL.md`. In a source checkout it
-is at the repository root, two folders above `skills/learning-guide/`. Resolve
-paths from the skill's actual location, not the conversation's working directory.
-Use an absolute script path or run commands from that harness folder.
-If only these instructions were downloaded without `learn.py` and `harness_core/`,
-the installation is incomplete: follow the repository's `INSTALL.md` to install
-the complete bundle. Do not invent missing commands or claim setup succeeded.
+Find `learn.py` beside this installed `SKILL.md`, or at the repository root in a
+source checkout. Use its absolute path. If the runtime is missing, follow
+`INSTALL.md`; instructions alone are not a complete installation.
 
-Run `python3 learn.py doctor` before first use. The installed bundle defaults to
-`~/Fieldnotes/courses`; a source checkout defaults to its own `courses/`.
-`FIELDNOTES_HOME` overrides the installed bundle's data parent. Both agents can
-use the same folder; read current state before writing. In a temporary/cloud
-environment, explain where the files live and help the learner download their
-course folders before the session ends. An installation in that environment does
-not install anything on the learner's computer or guarantee cross-session storage.
+On first use, read [tool contracts](references/contracts.md), run `doctor` and
+`list`, and verify reference access and the intended course directory. Doctor
+reports tools, not publication permissions. Installed defaults are
+`~/Fieldnotes/courses`; checkout defaults are its `courses/`. `FIELDNOTES_HOME`
+changes the installed data parent; `--courses PATH` selects a course parent.
+Handle commands for the learner. In temporary environments, explain storage limits
+and help preserve course folders. Never imply an installation on another machine.
 
-Doctor reports available tools; it does not prove that references can be read or
-activities can be published. Read the contracts and run `list` in the actual
-learning session. If access fails, preserve literal exchanges separately from
-summaries and state what was not saved. After access returns, inspect `resume`
-for open repairs and retry the failed operation before declaring setup restored.
-Never change machine permissions or agent configuration merely to teach a lesson.
+Run `resume COURSE` before continuing; inspect pending work, due reviews, the
+checkpoint and relevant exact evidence. `evidence COURSE ID` retrieves originals;
+summaries do not replace disputed words or task bytes. Ask which journey only if
+ambiguous. For a new goal, use `new`, clarify success and constraints just enough
+to start, then record the agreed goal. Label reported background as reported.
 
-Handle setup and tool commands for the learner. Explain the next learning step
-in ordinary language, and reuse an already stated goal. When a dashboard is useful,
-start the server, verify it responds, and provide the reachable link. A remote
-agent's loopback URL is not reachable from the learner's computer without a
-supported port preview. If none is available, teach and capture work in the
-conversation using chat activities. Never require the dashboard to begin learning.
+If access fails, preserve literal exchanges separately from summaries and report
+what was not saved. After access returns, inspect repairs and retry before claiming
+recovery. Do not change machine permissions merely to teach. Use a dashboard only
+when useful: start `serve`, verify the returned link is reachable, and explain that
+submission saves work but does not wake an agent. Chat activities work without it.
 
-`--courses /absolute/course-parent` selects moved or external course folders.
-Start with `python3 learn.py list` and `python3 learn.py resume COURSE`. Use the
-conversation to select the goal; ask only if it is ambiguous. Retrieve exact
-events with `evidence COURSE ID` and open the referenced activity and sources.
-Summaries are navigation aids, never replacements for disputed task/evidence bytes.
+## Plan at two scales
 
-For a new goal, use `new ID --title TITLE --goal 'actual learner intent'`. Clarify
-observable success, scope, constraints and preferences just enough to begin.
-Record the agreed goal with `record COURSE goal FILE`; an already clear user
-request can provide agreement. Do not invent a confirmation or diagnoses. Label
-reported background as reported. Preserve original intent when the goal evolves.
+Use [learning-research](../learning-research/SKILL.md) to inspect suitable material.
+For a broad goal, keep a coarse objective map; develop only the next connected
+unit in detail. For an exam, map published objectives before reporting overall
+coverage. Define observable capabilities and justify prerequisite edges by what
+they enable; unrelated topics must not share a convenient concept ID.
 
-Read [tool contracts](references/contracts.md) for record shapes and commands.
-Use [learning-research](../learning-research/SKILL.md) when researching material.
-Inspect relevant sections and build a provisional graph only as far as useful.
-Keep required capabilities separate from evidence about this learner. Record why
-prerequisites are needed; topical association alone is not a dependency.
+Choose a unit using the learner's goal, requested topic, relevant evidence and due
+reviews. Save a `plan` with why it is useful now, available support and a specific
+`fade_check`; revise when direction changes, not for every short exchange.
+At unit/session boundaries, reconcile evidence-linked `coverage` with what was
+taught. Keep introduced/practised material, assessed ability, delayed evidence and
+deferred work distinct. Missing coverage records do not mean a topic was untaught.
 
-Keep the graph aligned with the objectives actually being taught. For a broad
-exam or deadline, map the published objectives before reporting overall coverage;
-expand detail only as needed. Save `coverage` reports linked to real exchanges.
-Use `resume` to distinguish introduced/practised topics, assessed attempts,
-independent evidence, due recall, and blocked labs. A coverage report never grants
-competence. Do not manufacture a completion percentage from an incomplete graph.
+For a deadline, save a `budget` based on reported availability, priorities and
+deferred work. Revisit estimates at boundaries or after a blocker; reserve time
+for checks and repair. Offer scope/time tradeoffs for the learner to choose.
+Do not turn an incomplete map or reading completion into a readiness percentage.
 
-When time is constrained, save a `budget` with the learner's remaining study-time
-estimate, deadline, priorities and deferred work. Revisit it at session boundaries,
-after a blocked lab or when coverage lags. Compare remaining objectives with time,
-offer a concrete tradeoff, and let the learner choose scope, pace or date.
+## Teach, practise, check, respond
 
-## Choose the next useful purpose
+For the chosen capability, identify the foundation needed, choose the appropriate
+mode, then use the actual response to advance, repair a specific gap or defer it.
+These are tutor decisions, not a script to recite or a quiz after every message.
 
-Read the mission, relevant exact evidence, pending submissions, checkpoint and due
-reviews. Respect a requested topic or direct explanation. Choose a goal-relevant
-capability, state why now, and save a `plan` with support and a `fade_check`.
+| Mode | Teaching decision |
+| --- | --- |
+| Explanation | Trace one meaningful case from inputs through actions to result. Keep the case while mapping diagrams, words or code; define unfamiliar terms where they enter. |
+| Guided practice | Demonstrate enough to enable a meaningful learner step, then respond to that attempt. Reduce support when warranted. |
+| Check | Remove answer cues and change a relevant condition so the learner must select, explain or perform, rather than echo the example. |
 
-Distinguish predicting a result or recognizing a pattern, carrying out a procedure,
-and explaining how the operation produces its result. Success in one leaves the
-others open. Reported familiarity may still need a brief, local refresh; do not
-infer a broad prerequisite deficit from difficulty with one example.
+A brief diagnostic prediction can help choose support; supply needed vocabulary
+first and welcome uncertainty. Respect requests for a full explanation without
+making an attempt a condition of receiving it. When relationships are hard to
+visualize, use a sketch, analogy or paced animation with a useful learner action.
+Watching a demonstration is instruction, not demonstrated ability.
 
-Estimate what the learner can do independently and what they can accomplish with
-responsive help. Keep these judgments specific and tentative. If unknown, use a
-brief probe. Adjust support as well as task difficulty. A targeted hint may reveal
-the useful next step; no progress despite help can justify teaching a prerequisite.
-Tool failures, ambiguous prompts or language barriers are not concept failures.
-Fade support as performance warrants, then check a fresh task with less help.
-Do not calculate a global ZPD score or keep someone in repetitive checkpoints.
+Distinguish a misunderstood step from a missing framework. For the former, isolate
+that step; for the latter, trace a small complete process connecting the needed
+parts before returning to the difficulty. Do not infer a broad deficit from one
+answer or mistake a tool failure or ambiguous prompt for a concept failure.
+Example: "I know the terms but can't connect them" calls for a connected process,
+not another list of definitions or another isolated either/or question.
 
-If a lab is blocked, offer a local fixture, request/response trace, code repair,
-policy inspection or architecture decision with a concrete learner output. Name
-the skill this checks and what still requires live execution; keep the lab
-deferred and visible rather than counting the substitute as cloud execution.
+Interpret success at the level actually shown. A correct label copied from the
+question is supported recognition; acknowledging "got it" permits continuation but
+does not establish understanding. Use a discriminating follow-up when needed.
+Example: "Correct selection; the reason is still unclear" is more precise than
+claiming the mechanism is understood. Grade only announced criteria; an optional
+explanation cannot become a new requirement after the answer.
 
-## Teach, then revisit
+At a connected unit's boundary, offer a short check before expanding; later mix
+in earlier material. After a long explanation sequence, choose consolidation
+rather than automatically adding another topic. Respect an explicit request to
+move on, retaining the unresolved check; revisit it at a useful boundary, and
+surface the tradeoff if deferrals accumulate. Do not repeatedly interrupt with
+quizzes or make progress conditional on testing.
+Example: "We'll continue; that distinction stays open for a later mixed check."
 
-When useful, invite a short prediction or attempt before the explanation. Make it
-low stakes, accept uncertainty, and record it as diagnostic `pretest` evidence.
-Failure is permitted, never a required outcome. Supply vocabulary/setup first
-when needed for a meaningful prediction. Follow the learner's preference for
-direct teaching rather than forcing every exchange into a quiz.
+Read [testing and feedback](references/testing.md) when authoring a check or
+judging readiness. Use [learning-activity](../learning-activity/SKILL.md) to publish
+formal tasks and capture work; ordinary explanations can remain observations.
+If a lab is blocked, offer a concrete local trace, code/policy repair or other
+appropriate task. Record what it checks and what still needs live performance.
 
-Teach from the relevant inspected material, compare with the actual first answer,
-and explain the mechanism/correction. When the learner cannot trace an operation,
-start with the smallest meaningful case. Connect its inputs, actions and result
-before adding repetition, aggregation or abstraction. When changing representation
-(example, diagram, notation, code), explicitly map corresponding parts and explain
-changes in orientation, ordering or terminology. Keep the same case while making
-that connection so the learner can follow what stays the same.
+## Preserve evidence and continuation
 
-For guided practice, demonstrate enough to make the next action possible, then
-leave a meaningful step for the learner before revealing the rest. This might be
-one calculation, a sentence revision or the next step in a process. Respond to the
-actual attempt; if the learner goes further successfully, reduce support rather
-than making them repeat every small step. A complete worked explanation remains
-appropriate when requested; do not make participation a condition of receiving it.
+At useful boundaries, save substantive literal exchanges and a separate checkpoint
+using `record COURSE session FILE`, or individual records from the contracts.
+Keep the exact question, actual help and learner response, including uncertainty;
+put interpretations in checkpoints, not learner quotations. Keep hidden reasoning,
+tool chatter and fabricated work out. Inspect `resume` after a save or recovery.
+Never edit published activities or journal events; use new versions and explicit
+superseding assessments. Unfinished learner work stays intact.
 
-When the learner cannot visualize a mechanism, offer a representation that makes
-the relevant relationships visible and connect it to a short learner action.
-A static sketch, physical analogy or annotated example may suffice. Use animation
-when change or movement clarifies the mechanism, with learner-controlled pacing;
-watching it is supported instruction, not evidence of understanding.
+For formal assessment, publish the question and criteria before asking, submit
+the actual answer to that version, and assess against its criteria. Preserve shown
+help. When independent evidence matters, ask explicitly about notes or assistance;
+if unanswered, retain `unknown`. A declaration cannot erase observed help.
+Correctness, supported performance, independence, transfer and delayed retention
+are distinct; claim only what the saved task and response support. Do not infer a
+global ability score, mastery or memory probability from limited evidence.
 
-If the learner reports increased confusion, narrow the explanation to the unresolved
-step and reduce simultaneous concepts or representations. For a broad question
-arising from that confusion, give a brief orientation and offer further detail
-without introducing a catalogue of related topics. Check whether the smaller
-explanation helps before expanding again.
-
-Use a focused self-explanation or a fresh task with less support when useful.
-Choose the task to distinguish reconstructing the mechanism from repeating a
-shortcut in the worked example. Preserve the help given; immediate supported
-success and the learner's report that it makes sense do not establish retention.
-Use [learning-activity](../learning-activity/SKILL.md) for an interaction or artifact;
-ordinary conversation is sufficient when it serves the purpose.
-
-For a chat-only question that will receive formal assessment, publish its exact
-question/criteria with `publish COURSE SPEC.json --chat` before asking it, then
-save the actual response using `submit`. No browser visit is needed. An ordinary
-explanation can remain a conversation observation without formal assessment.
-
-Read [testing and feedback](references/testing.md) when planning checks, topic
-transitions, mixed practice or readiness testing. Use short fresh checks after a
-useful topic group, later interleave earlier topics, and offer timed practice when
-the goal calls for it. Adapt cadence to the learner; "next" can defer a check
-without establishing success. Do not let a long run of explanations silently
-replace all testing. Use the published criteria to give precise partial credit.
-
-Build retrieval into continuation: invite reconstruction before reopening notes,
-then provide corrective feedback and targeted practice. Interleave related,
-previously encountered capabilities when choosing the method is itself useful.
-Transfer changes a meaningful constraint, context or representation. New numbers
-alone are boundary practice. Physical skills require actual performance evidence.
-
-Use `record COURSE schedule FILE` to save a concrete retrieval prompt and date when justified.
-Intervals are a replaceable starting heuristic, not calibrated memory estimates.
-When the learner says "review this later", save a specific reconstruction prompt
-with `record ... schedule`, then inspect `resume` and confirm the effective date
-and prompt. A checkpoint mention alone is not a scheduled review. If saving fails,
-say so and leave an open `repair`; retry when access returns. Do not claim a review
-is complete or advance its date from a conversational acknowledgment.
-Consult due reviews on return, prioritizing relevance and user choice. Immediate
-repeats do not establish delayed retention. Do not defer an existing review using
-`learner_override` unless the learner actually asked to move it. No external
-reminders or automatic agent wakeup are implied by a due date or web submission.
-
-## Interpret actual evidence
-
-Record substantive learner-visible exchanges as literal `observation` events.
-For a connected exchange, `record COURSE session FILE` saves ordered observations
-and a separate checkpoint in one immutable event with a retry identity. Include
-the exact question, actual help and literal answer, retaining spelling and
-uncertainty. Summaries belong in checkpoints, never in learner observations.
-Read the session contract before using it; do not include hidden reasoning or
-shell logs. Batch at a useful boundary rather than issuing several commands for
-every short message. Inspect `resume` after saving or recovering a failed save.
-Keep private reasoning, tool chatter and invented responses out. Raw observations,
-submissions, assessment judgments and next-step plans are separate records.
-
-On return from a surface, inspect `pending`/`resume`, the exact published version,
-latest submission, artifact snapshots, displayed help and announced criteria.
-Never manufacture an answer when a save is missing. Preserve help and uncertainty;
-absence of an observed hint does not prove unassisted work. The learner must
-declare independence; unknown assistance remains unknown.
-
-Use `assess COURSE FILE` for criterion findings and actionable feedback. A correct
-answer remains correct when support was used or an optional explanation is absent.
-Do not grade against invented givens, extra criteria or a preferred wording when
-other answers are defensible. Report defective content as uncertain and publish
-a repair. Pretests/guided work may receive feedback but cannot establish independent
-capability. Reassessment names `supersedes`; prior evidence stays intact.
-
-Record a `checkpoint` at useful stopping points: exact activity, unfinished draft,
-open questions, summary and next action. Leave learner work intact. Research,
-author QA and code execution establish nothing about the learner by themselves.
+When asked to review later, save a specific reconstruction prompt with `schedule`
+and verify its effective date/prompt in `resume` before confirming. At continuation,
+invite due recall before reopening notes where appropriate. Respect learner
+choices without silently moving due dates or marking acknowledgment as retrieval.
+A checkpoint mention alone is not scheduling; on save failure, report it and retain
+a repair where possible. Review intervals are heuristics, not external reminders.

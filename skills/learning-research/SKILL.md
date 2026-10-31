@@ -5,7 +5,8 @@ description: Research and inspect reliable material for an evolving learning goa
 
 # Research for the next useful learning step
 
-Read the current goal and relevant evidence with the shared `learn.py resume COURSE`.
+The guide decides the teaching sequence; this workflow finds, inspects and
+preserves suitable sources. Read the goal and relevant evidence with `resume COURSE`.
 Research a coherent starting route and deepen it as needed. A complete library or
 finished syllabus is not a prerequisite for learning. Match the requested subject,
 depth, language, accessibility and real-world use. Reported prior knowledge stays
@@ -32,13 +33,12 @@ it cannot determine whether license metadata is true. Do not download without a
 reuse basis, execute downloaded code during acquisition, or edit originals/receipts
 to accept an alteration. Corrections belong in adjacent research notes.
 
-Map fine enough concepts to identify prerequisites and evidence. Explain every
-required edge with the mechanism it enables. Keep helpful connections distinct
-from prerequisites; retain uncertainty for proposed dependencies. Cite recorded
-resource IDs in graph nodes. Use meaningful observable target capabilities and
-limit required scope to the learner's goal. Preserve original materials rather
-than replacing them with an agent-generated book.
+Within the guide's coarse objective map, investigate prerequisite detail for the
+current unit. Explain each required edge by the mechanism it enables, retaining
+uncertainty for proposed dependencies. Cite recorded resources and propose
+observable capabilities; the guide integrates these into the teaching plan.
+Preserve originals rather than replacing them with an agent-generated book.
 
 When a claim is disputed, inspect the source again and resolve or document the
-uncertainty. Save decision-grade notes with exact pointers, then record the next
-purpose. Research and source checks never establish learner understanding.
+uncertainty. Save findings with exact pointers for the guide's next decision.
+Research and source checks never establish learner understanding.

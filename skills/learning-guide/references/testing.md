@@ -1,74 +1,64 @@
 # Tests, feedback and readiness
 
-Use this reference for checks and readiness decisions. The active agent authors
-and interprets the tasks; the tools preserve their identity, actual work and help.
+Use this reference to author checks and interpret evidence. The guide owns pacing
+and teaching-mode decisions; the activity workflow owns publication and capture.
 
-## Choose evidence to match the question
+## Match the task to the evidence needed
 
-| Purpose | Task design | What it can establish |
-| --- | --- | --- |
-| Diagnostic | Brief prediction before teaching; uncertainty welcome | Starting point for support |
-| Guided practice | Leave a meaningful step after a worked example | Performance with that help |
-| Topic check | Fresh case, no answer-bearing example beside it | Application on the announced criteria |
-| Mixed check | Interleave earlier topics without naming the method | Choosing and applying a method |
-| Delayed retrieval | Reconstruct after the saved due date, before notes | Later performance with declared assistance |
-| Timed practice | Representative scope, explicit time allowance | Performance under that recorded constraint |
+| Purpose | Design and limit |
+| --- | --- |
+| Diagnostic | A brief prediction before teaching guides support; uncertainty is useful. |
+| Guided practice | Leave meaningful work after a demonstration; success includes that support. |
+| Topic check | A fresh case without an answer-bearing example beside it checks application. |
+| Mixed check | Combine earlier capabilities without naming the method to check selection. |
+| Delayed retrieval | Reconstruct before notes, after the saved due date; preserve assistance. |
+| Timed practice | State the allowance and representative scope; record timing only if observed or reported. |
 
-Select a cadence that fits the goal and learner. After a connected topic group,
-offer a small check before extending the explanation. At later session boundaries,
-include earlier topics. For deadline or exam goals, reserve time for mixed and
-timed practice instead of spending the whole budget on new material. A requested
-explanation or "move on" can defer a check; retain the unresolved check in the
-checkpoint or budget. Do not enforce a fixed number of questions per topic.
+For a check, vary a consequential condition, not merely names or numbers. Remove
+clues that select the answer for the learner. Choose a reason, rejected alternative,
+prediction or performance step that distinguishes the intended capability.
+Example: after showing a successful process, change one dependency and ask the
+learner to trace the consequences, rather than repeat the step just demonstrated.
+Match the output to the goal: recognizing a method cannot establish executing it.
+Physical skills require actual performance evidence.
 
-## Publish before asking
+## Publish and capture
 
-Use the activity workflow and `publish --chat` for conversation tests. Specify
-the complete scenario, assumptions, question and observable criteria before the
-attempt. Store expected answers and distractor explanations in `private_evaluation`,
-outside public assets. For a set of questions, announce criteria per item and
-target each relevant concept. Mixed practice can use several concept IDs; timed
-practice should state the allowance in its instruction. Record actual timing only
-when observed or explicitly reported, with its provenance.
+Use the activity workflow to publish the exact scenario, assumptions, questions and
+observable criteria before a formal attempt; `--chat` needs no separate surface.
+State necessary rules in the scenario. Public criteria describe what is judged,
+without supplying the conclusion or solution sequence: "justify the order", not
+the correct order itself. Keep expected answers and distractor explanations in
+`private_evaluation`, outside public assets. For a question set,
+announce criteria per item and target each relevant concept.
 
-Change the decision needed, not just names and numbers. Avoid putting the target
-term in the question or reproducing the worked example. When useful, ask for a
-choice and a reason, a rejected alternative, or the smallest change that would
-make another answer correct. Follow the goal: a code-reading exercise is useful
-for debugging, but cannot establish blank-file implementation ability.
+Wait for a returned activity identity before presenting a formal test. If access
+fails, use the repair procedure in [contracts](contracts.md). On recovery, inspect
+the saved question and ask for a fresh attempt; do not retroactively convert an
+earlier conversation into an independent submission.
 
-Publish success must return an activity identity before the task is presented as
-a formal test. On an I/O failure, `resume` exposes a saved repair when the journal
-remains writable. `retry-publication COURSE REPAIR_ID` retries its exact chat
-specification once after access is restored. Inspect the saved question, then ask
-for a fresh attempt. Do not backfill an earlier conversational response as an
-independent answer to a newly published task. If even the repair cannot be saved,
-preserve the specification and exchange as recovery files and report that gap.
+Use `submit` for the literal response to the exact version. If independence is
+needed, ask explicitly, for example: "Did you use notes, hints or other help?"
+Record the actual answer; otherwise use `--assistance unknown`. Save displayed
+hints as activity-linked help. An empty assistance declaration cannot erase them.
 
-## Capture and judge the actual attempt
+## Feedback and next evidence
 
-Save the literal answer using `submit`, naming the exact version and assistance.
-Use `--assistance unknown` unless the learner explicitly declared independence.
-Record displayed hints as activity-linked `help` observations; a later empty
-assistance declaration does not erase them. Tests with provided support remain
-useful, but do not count them as independent performance.
+Use `assess` to judge announced criteria against the saved answer. Separate the
+correctness of a selection, its reasoning and execution when the task asks for
+each. Accept defensible alternatives and equivalent wording. If wording is
+ambiguous, identify what is established and use one targeted follow-up; do not
+invent extra criteria, mark everything wrong or praise it as fully demonstrated.
 
-Grade against the announced criteria. Separate a correct choice, a sound reason,
-and a demonstrated implementation when the task asks for each. For partial or
-ambiguous wording, identify exactly what is established and what remains unclear.
-Use one discriminating counterexample or follow-up rather than automatically
-repeating a whole lesson. Do not require vocabulary precision unless the task
-requires it, or call an ambiguity fully correct and then contradict that praise.
+After the intended attempt, explain the error or uncertainty and offer focused
+repair, then a fresh check as appropriate. A disclosed answer reused immediately
+is practice. Correct answers with help remain correct, but do not establish
+independent ability. An immediate success does not establish delayed retention.
+Report defective tasks as uncertain and publish a repair; reassessments explicitly
+supersede earlier judgments while preserving their history.
 
-Give feedback after the intended attempt, explain mistakes and distractors, and
-offer focused repair followed by a fresh check. Reusing a disclosed answer is
-practice. Neither an immediate correct response nor a self-report of understanding
-establishes delayed retention.
-
-## Report readiness with limits
-
-Use current objective coverage, saved findings across unfamiliar mixed cases,
-delayed evidence, timing where relevant, and deferred practical work. Show gaps
-and propose how to spend remaining time. Do not infer an exam score, calibrated
-pass probability or mastery percentage from a small tutor-authored test. Clearly
-distinguish official practice results, learner-reported results and local checks.
+For readiness, consider objective coverage, unfamiliar mixed cases, delayed
+performance, timing where relevant and deferred practical work. Distinguish
+external completions, learner-reported results and local assessments. Show gaps
+and propose how to use remaining time; no calibrated pass probability, exam-score
+prediction or mastery percentage follows from a small tutor-authored test.

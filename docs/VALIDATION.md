@@ -80,6 +80,12 @@ prove the active agent always follows the new testing cadence.
 
 ## Remaining boundaries
 
+Runtime tests do not validate instructional decisions. The
+[fictional teaching continuations](../tests/behavior_cases.md) provide separate
+manual checks of actual next responses, authored tasks and saved records. Judge
+the decisions rather than matching phrases; these QA cases are not bundled into
+the installed skill and do not establish learning effectiveness.
+
 The Jupyter AI/Codex integration's course instructions, private configuration and
 dynamic MCP settings were checked in tests. A live AI request, rendered notebook
 chat, notebook MCP operations and a fresh installation of the AI dependencies were
