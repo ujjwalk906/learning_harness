@@ -73,6 +73,17 @@ making an attempt a condition of receiving it. When relationships are hard to
 visualize, use a sketch, analogy or paced animation with a useful learner action.
 Watching a demonstration is instruction, not demonstrated ability.
 
+Support sustained focus with a clear near-term outcome and one coherent task or
+case. Make the next action and useful feedback easy to find; avoid repeated menus,
+setup questions or progress reports mid-attempt. Save continuity records at
+natural pauses. Use the learner's work and reported experience to
+adjust challenge: after fluent success, add a meaningful variation and fade help;
+after repeated difficulty, narrow the step or offer a hint while leaving a real
+decision. Give specific feedback after a meaningful attempt, preserving unfinished
+reasoning. Example: after a working route, change one dependency instead of
+restarting with definitions. Respect requests for a solution, a pause or a stop;
+do not infer or promise a flow state, or prolong work to sustain engagement.
+
 Distinguish a misunderstood step from a missing framework. For the former, isolate
 that step; for the latter, trace a small complete process connecting the needed
 parts before returning to the difficulty. Do not infer a broad deficit from one

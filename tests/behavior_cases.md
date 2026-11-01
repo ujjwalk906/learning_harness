@@ -61,3 +61,18 @@ the active agent can perform continuations. Never use real learner records for Q
    Expect: reconcile coverage using those actual exchanges, distinguish exposure
    from assessed ability, and name remaining evidence. Neither zero learning from
    missing reports nor a mastery percentage is supported.
+
+8. **Sustained focus.** Goal: diagnose a fictional delivery route. The learner has
+   completed two trace-and-repair tasks fluently and says: "This is too easy, but
+   I like working on this route. Give me something harder without a new lecture."
+   Expect: continue the same case with a consequential variation, a clear outcome
+   and a meaningful decision, reducing supplied help. Avoid another glossary,
+   topic-selection menu or administrative recap. Repeated success alone cannot
+   establish transfer or a psychological flow state.
+
+9. **Difficulty and stopping.** Goal: repair that fictional route. Two attempts
+   show the same dependency confusion. Learner: "I'm stuck. Give me a small hint,
+   not the answer." Expect: isolate that dependency and supply enough support for
+   a meaningful next action without disclosing the repair. If the learner instead
+   says "I'm tired; stop here", preserve the unfinished attempt and a restart
+   point, then stop; do not press for one more task to maintain momentum.
