@@ -2,7 +2,6 @@
 from __future__ import annotations
 
 import importlib.util
-import fcntl
 import json
 import os
 from pathlib import Path
@@ -15,6 +14,7 @@ from urllib.request import build_opener, ProxyHandler, Request
 
 from .store import Invalid, atomic_json, read_json, safe_path
 from .engine import require
+from .locking import file_lock
 
 
 def alive(info):
@@ -30,12 +30,8 @@ def open_notebook(harness, course, activity, runtime, *, python=None, ai=False):
     directory = Path(runtime) / harness.store.config(course)["instance_id"] / ("ai" if ai else "standard")
     directory.mkdir(parents=True, exist_ok=True, mode=0o700)
     directory.chmod(0o700)
-    with (directory / "launch.lock").open("a") as lock:
-        fcntl.flock(lock, fcntl.LOCK_EX)
-        try:
-            return _open_notebook(harness, course, activity, runtime, python=python, ai=ai)
-        finally:
-            fcntl.flock(lock, fcntl.LOCK_UN)
+    with file_lock(directory / "launch.lock"):
+        return _open_notebook(harness, course, activity, runtime, python=python, ai=ai)
 
 
 def _open_notebook(harness, course, activity, runtime, *, python=None, ai=False):

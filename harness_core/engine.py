@@ -37,9 +37,38 @@ def activity_key(activity):
     return activity["id"] + "@" + activity["version"]
 
 
+def learning_events(events):
+    """Unpack an atomic session while retaining its authoritative event identity."""
+    for event in events:
+        if event["type"] == "session":
+            for index, record in enumerate(event["payload"]["records"]):
+                view = {k: v for k, v in event.items() if k not in {"sha256", "previous"}}
+                yield {**view, "type": record["kind"], "payload": record["payload"], "session_record": index}
+        else:
+            yield event
+
+
+def session_defaults(payload):
+    """Normalize optional fields for retry comparison without rejudging old scope."""
+    for record in payload.get("records", []) if isinstance(payload.get("records"), list) else []:
+        if not isinstance(record, dict) or not isinstance(record.get("payload"), dict):
+            continue
+        value = record["payload"]
+        if record.get("kind") == "checkpoint":
+            value.setdefault("open_questions", [])
+            value.setdefault("draft", "")
+        elif record.get("kind") == "schedule":
+            value.setdefault("learner_override", False)
+        elif record.get("kind") == "repair":
+            value.setdefault("evidence_ids", [])
+
+
 def projection(config, events, *, at=None):
     """Read model only: never infer competence from visits, chat, runs or drafts."""
     at = at or now()
+    revision = events[-1]["sha256"] if events else None
+    updated_at = events[-1]["at"] if events else config["created_at"]
+    events = list(learning_events(events))
     goal = latest(events, "goal", {"title": config["title"], "goal": config["original_goal"], "confirmed": False})
     graph = latest(events, "graph", {"nodes": [], "rationale": "No graph yet; starting knowledge is unassessed"})
     resources = {e["payload"]["id"]: e["payload"] for e in events if e["type"] == "resource"}
@@ -127,12 +156,26 @@ def projection(config, events, *, at=None):
     checkpoint = latest(events, "checkpoint", None)
     status = latest(events, "status", {"status": "active"})["status"]
     navigation = next((e["payload"] for e in reversed(events) if e["type"] in {"plan", "checkpoint"}), None)
+    coverage = {}
+    for node in graph["nodes"]:
+        cid = node["id"]
+        reports = [e for e in events if e["type"] == "coverage" and cid in e["payload"]["concept_ids"]]
+        attempts = [s for s in submissions.values() if cid in activities[s["activity"]]["concept_ids"]]
+        coverage[cid] = {"stage": reports[-1]["payload"]["stage"] if reports else "not-recorded",
+            "report_id": reports[-1]["id"] if reports else None,
+            "reason": reports[-1]["payload"]["reason"] if reports else "No coverage report",
+            "submission_ids": [s["id"] for s in attempts],
+            "checked": any(s["id"] in assessments for s in attempts),
+            "review": reviews.get(cid), "evidence": learner.get(cid, {})}
+    repairs = {e["payload"]["id"]: {**e["payload"], "event_id": e["id"]}
+               for e in events if e["type"] == "repair"}
     return {"course": config, "goal": goal, "graph": graph, "resources": list(resources.values()),
             "activities": activities, "submissions": submissions, "assessments": assessments,
             "learner": learner, "reviews": reviews, "progress": counts, "pending": pending,
             "plan": plan, "checkpoint": checkpoint, "navigation": navigation, "status": status,
-            "revision": events[-1]["sha256"] if events else None,
-            "updated_at": events[-1]["at"] if events else config["created_at"]}
+            "coverage": coverage, "budget": latest(events, "budget"),
+            "repairs": list(repairs.values()),
+            "revision": revision, "updated_at": updated_at}
 
 
 class Harness:
@@ -154,11 +197,17 @@ class Harness:
         require(set(ids) <= known, f"Unknown concepts: {sorted(set(ids) - known)}")
 
     def record(self, course, kind, payload, *, expected_revision=None):
-        if kind in {"observation", "plan", "checkpoint", "schedule", "status"}:
+        if kind in {"observation", "plan", "checkpoint", "schedule", "status", "session", "coverage", "budget", "repair"}:
             require(os.environ.get("COURSE_AUTHOR_QA") != "1", "Author QA cannot write learner records")
         require(isinstance(payload, dict), "Record must be a JSON object")
         payload = deepcopy(payload)
         with self.store.locked(course):
+            if kind == "session":
+                session_defaults(payload)
+                for prior in self.store.events(course):
+                    if prior["type"] == kind and prior["payload"].get("client_id") == payload.get("client_id"):
+                        require(prior["payload"] == payload, "Session retry identity reused with different content")
+                        return prior
             state = self.state(course)
             if expected_revision is not None:
                 require(state["revision"] == expected_revision, "New records arrived; resume before publishing this change")
@@ -168,7 +217,37 @@ class Harness:
             return event
 
     def _validate(self, kind, p, state):
-        if kind == "goal":
+        if kind == "session":
+            text(p.get("client_id"), "Session retry identity", 120)
+            records = p.get("records")
+            require(isinstance(records, list) and 0 < len(records) <= 100, "Supply 1–100 session records")
+            for record in records:
+                require(isinstance(record, dict) and set(record) == {"kind", "payload"}, "Use kind and payload for each session record")
+                require(record["kind"] in {"observation", "checkpoint", "schedule", "coverage", "budget", "repair"}, "Unsupported session record kind")
+                require(isinstance(record["payload"], dict), "Session record payload must be an object")
+                self._validate(record["kind"], record["payload"], state)
+        elif kind == "coverage":
+            self._concepts(state, p.get("concept_ids"))
+            require(p.get("stage") in {"introduced", "practised"}, "Coverage reports describe introduced or practised material, not mastery")
+            text(p.get("reason"), "Coverage reason")
+            self._evidence_ids(state, p.get("evidence_ids"), nonempty=True)
+        elif kind == "budget":
+            require(type(p.get("remaining_minutes")) is int and p["remaining_minutes"] >= 0, "remaining_minutes must be a nonnegative integer estimate")
+            timestamp(p.get("deadline"))
+            for field in ["priorities", "deferred"]:
+                string_list(p.get(field), field)
+            text(p.get("reason"), "Budget rationale")
+        elif kind == "repair":
+            identity(p.get("id"))
+            require(p.get("status") in {"open", "resolved", "deferred"}, "Unknown repair status")
+            for field in ["operation", "detail", "next_action"]:
+                text(p.get(field), field)
+            self._evidence_ids(state, p.setdefault("evidence_ids", []), nonempty=p["status"] == "resolved")
+            if "specification" in p:
+                require(p["operation"] == "publish-chat", "Only chat publication supports saved-specification retries")
+                self.validate_activity(p["specification"], state)
+                identity(p.get("activity_id"))
+        elif kind == "goal":
             for field in ["title", "goal"]:
                 text(p.get(field), field)
             require(type(p.get("confirmed")) is bool, "Record whether the learner agreed to the goal")
@@ -253,6 +332,10 @@ class Harness:
         else:
             raise Invalid(f"Unsupported record type: {kind}")
 
+    def _evidence_ids(self, state, ids, *, nonempty=False):
+        known = {e["id"] for e in self.store.events(state["course"]["id"])}
+        require(set(string_list(ids, "evidence_ids", nonempty=nonempty)) <= known, "Reference existing authoritative evidence IDs")
+
     def validate_activity(self, p, state):
         require(state["goal"].get("confirmed"), "Agree on the goal before publishing an activity")
         allowed = {"title", "instruction", "why", "review_prompt", "concept_ids", "purpose", "phase",
@@ -315,8 +398,8 @@ class Harness:
                             and event["payload"]["declared_assistance"] == assistance
                             and event["payload"].get("artifacts", []) == snapshots, "Retry identity reused with different content")
                     return event
-            observed_help = [e["id"] for e in self.store.events(course) if e["type"] == "observation"
-                and e["payload"].get("activity") == activity and e["payload"]["kind"] == "help"]
+            observed_help = list(dict.fromkeys(e["id"] for e in learning_events(self.store.events(course)) if e["type"] == "observation"
+                and e["payload"].get("activity") == activity and e["payload"]["kind"] == "help"))
             effective_assistance = [*assistance]
             if observed_help:
                 effective_assistance.append("observed activity help")
@@ -399,6 +482,9 @@ class Harness:
             "fictional": state["course"]["fictional"], "confirmed": state["goal"].get("confirmed", False),
             "status": state["status"], "progress": state["progress"], "revision": state["revision"],
             "scope_version": state["graph"].get("scope_version", 0),
+            "coverage": state["coverage"], "budget": state["budget"],
+            "open_repairs": [{k: v for k, v in r.items() if k != "specification"}
+                             for r in state["repairs"] if r["status"] != "resolved"],
             "updated_at": state["updated_at"], "due_reviews": [{**r, "concept_title": next((n["title"] for n in state["graph"]["nodes"] if n["id"] == r["concept_id"]), r["concept_id"])} for r in state["reviews"].values() if r["due"]],
             "pending_count": len(pending), "current_activity": activity,
             "next_action": (state["navigation"] or {}).get("next_action") or (state["navigation"] or {}).get("purpose") or "Start with your goal in the agent conversation",
@@ -415,7 +501,7 @@ class Harness:
             "checkpoint": state["checkpoint"], "pending": state["pending"], "current_activity": activity,
             "current_submissions": [s for s in state["submissions"].values() if activity and s["activity"] == activity_key(activity)],
             "resources": state["resources"],
-            "recent_observations": [e for e in self.store.events(course) if e["type"] == "observation"][-12:],
+            "recent_observations": [e for e in learning_events(self.store.events(course)) if e["type"] == "observation"][-12:],
             "course_root": str(self.store.root(course)), "revision": state["revision"],
             "notes": "Retrieve exact evidence with evidence COURSE ID. Chat submission does not automatically wake an agent. "
                      "A provisional graph is not a diagnosis. Progress dimensions overlap; missing evidence is unassessed."}

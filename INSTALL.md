@@ -7,10 +7,10 @@ https://github.com/ujjwalk906/learning_harness.
 ## Choose the available environment
 
 Check what tools you actually have: downloading files, writing files and running
-Python 3.11+ in a macOS/Linux environment are sufficient. No API key, paid API,
+Python 3.11+ on Windows, macOS or Linux are sufficient. No API key, paid API,
 pip package, Node, Git or separate model runner is required for core learning.
 Git is convenient for acquisition; downloading and extracting GitHub's source ZIP
-also works. Native Windows needs a Linux environment such as WSL.
+also works. Native Windows is supported for core learning.
 
 If you can only browse/read links, you cannot install this executable skill from
 the chat. Explain this briefly and offer the user the ZIP upload route below or

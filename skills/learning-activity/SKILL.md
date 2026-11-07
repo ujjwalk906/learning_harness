@@ -5,24 +5,22 @@ description: Create or revise a focused learning activity in HTML, Jupyter, Mark
 
 # Build the workbench the learning purpose needs
 
-Read the current goal, plan and relevant exact evidence with shared `learn.py`.
+The guide chooses the learning purpose and teaching mode; this workflow builds
+and publishes its surface and captures work. Read the current goal, plan and
+relevant exact evidence with shared `learn.py`.
 Choose a surface for the learner's action: manipulate a simulation, annotate text,
 write or speak, construct an explanation, execute code or inspect an experiment.
 Conversation itself can be enough. Do not force nonprogramming learning into code.
 
 Author only the next useful activity or a bounded connected group. Supply the
 actual case, starting files/data, clear instructions, announced criteria and a
-working place to respond. Teach the prerequisites needed to perform the task;
-an optional low-stakes pretest may precede teaching. Label supplied orchestration
-and environment boundaries. A model is not execution of the modeled mechanism.
+working place to respond. Follow the guide's chosen mode; use its testing reference
+for check design. Label supplied orchestration and environment boundaries.
+A model is not execution of the modeled mechanism.
 
-Give a visual a specific learner action, such as tracing a dependency, predicting
-a change or constructing the next result. For guided practice, reveal worked steps
-progressively and leave a meaningful part to complete; avoid showing all results
-elsewhere on the page before that attempt. Use animation when movement or change
-clarifies the mechanism, with pause and step controls. A static representation or
-complete demonstration is appropriate when it better serves the requested purpose.
-Preserve which worked steps and hints were actually displayed as help.
+For guided surfaces, reveal worked steps progressively and keep undisclosed
+answers out of other page elements. Give animations pause/step controls. Capture
+which worked steps and hints were actually displayed as help.
 
 Create activity files under the course's drafts/ or a temporary authoring folder,
 then publish a snapshot using `learn.py publish COURSE SPEC.json --artifact PATH`.

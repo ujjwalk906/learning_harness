@@ -11,6 +11,23 @@ and derives the current view. Raw submissions embed file snapshots. Assessments
 reference actual latest submissions and announced criterion IDs. Superseding a
 judgment changes effective interpretation without adding a retrieval attempt.
 
+An optional `session` event atomically stores a bounded ordered group of literal
+observations and separate continuity records. Projection replay unpacks those
+records with their parent event identity; the hashed journal entry remains the
+authoritative source. Stable client IDs make uncertain-save retries idempotent.
+This creates neither a submission nor an assessment. Coverage reports describe
+teaching exposure and link to existing evidence; assessed capability still derives
+only from actual activity submissions and separate criterion judgments. Study
+budgets are explicit estimates with priorities and deferred work, not time tracking.
+
+Publication I/O failures attempt to append an operational repair. Saved chat
+specifications can be retried explicitly after access is restored; successful
+publication is reused if saving its repair resolution fails. Asset retries require
+manual inspection because source bytes can change. If the journal is unwritable,
+the caller must preserve recovery files; there is no claim of a durable repair.
+Projection-write failures after publication return the committed identity with a
+rebuild warning. They do not authorize a second publication or a retroactive test.
+
 The current state is derived afresh for dashboard reads. `state/current.json` and
 RESUME.md are convenience snapshots that `rebuild` can recreate. The dashboard
 does not guess progress from Markdown or file counts. It counts current required
@@ -52,7 +69,7 @@ and integrity checks cannot establish source quality or instructional truth.
 Course folders are self-contained data, not self-contained executable installations.
 They require a compatible shared harness (version recorded in course.json), and
 optional runtime dependencies are separately installed. The current version uses
-POSIX locking. Explicit migration will be needed if future schemas change.
+native Windows or POSIX advisory locking. Explicit migration will be needed if future schemas change.
 
 `install.py` builds a single self-contained learning-guide skill from an explicit
 allowlist. It includes the shared Python runtime, web assets, tool contracts and
@@ -64,6 +81,8 @@ ZIP use this payload. The ChatGPT desktop target wraps it in a portable plugin
 and merges a personal marketplace entry; enabling the plugin remains an app action.
 No installation step creates learner evidence or starts a model. Updates preflight
 ownership and data separation, smoke-check staged code, then replace installed code.
+Windows staging folders inherit normal parent access instead of using mkdtemp's
+owner-only ACL, so installed and published files remain readable to the sandbox.
 
 Author checks, fictional demonstrations and harness development do not authorize
 assessment of the developer. Keep QA state in temporary directories, and use

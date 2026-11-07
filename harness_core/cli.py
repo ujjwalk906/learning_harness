@@ -30,7 +30,7 @@ def parser():
         sub.add_parser(name).add_argument("course")
     record = sub.add_parser("record", help="Publish a validated learning record")
     record.add_argument("course")
-    record.add_argument("kind", choices=["goal", "graph", "resource", "plan", "observation", "checkpoint", "schedule", "status"])
+    record.add_argument("kind", choices=["goal", "graph", "resource", "plan", "observation", "checkpoint", "schedule", "status", "session", "coverage", "budget", "repair"])
     record.add_argument("file", help="JSON file or - for stdin")
     record.add_argument("--expected-revision", help="Reject stale agent publication")
     publish = sub.add_parser("publish", help="Snapshot an immutable activity and its assets")
@@ -39,6 +39,8 @@ def parser():
     surface.add_argument("--artifact", type=Path, help="Single entry file or a directory containing the declared entrypoint")
     surface.add_argument("--chat", action="store_true", help="Record the exact chat question without building a separate surface")
     publish.add_argument("--id", help="Existing activity ID creates a new version; old links stay intact")
+    retry = sub.add_parser("retry-publication", help="Retry an open saved chat publication after repairing access")
+    retry.add_argument("course"); retry.add_argument("repair_id")
     submit = sub.add_parser("submit", help="Save literal learner work, not generated answers")
     submit.add_argument("course"); submit.add_argument("activity", help="ACTIVITY_ID@v001")
     answer = submit.add_mutually_exclusive_group(required=True)
@@ -91,6 +93,9 @@ def dispatch(args):
     if command == "publish":
         from .activities import publish
         return publish(harness, args.course, load(args.file), args.artifact, activity_id=args.id)
+    if command == "retry-publication":
+        from .activities import retry_publication
+        return retry_publication(harness, args.course, args.repair_id)
     if command == "submit":
         answer = args.answer_file.read_text(encoding="utf-8") if args.answer_file else args.answer
         return harness.submit(args.course, args.activity, answer, [] if args.unassisted else args.assistance,
@@ -141,6 +146,10 @@ def dispatch(args):
 
 
 def main(argv=None):
+    # JSON is UTF-8 regardless of the Windows console code page or redirection.
+    for stream in [sys.stdin, sys.stdout, sys.stderr]:
+        if hasattr(stream, "reconfigure"):
+            stream.reconfigure(encoding="utf-8")
     args = parser().parse_args(argv)
     try:
         result = dispatch(args)

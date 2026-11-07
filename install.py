@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Install Fieldnotes for Claude Code, Codex or ChatGPT desktop; build skill ZIPs.
 
-Python 3.11+, macOS/Linux; standard library only. No network calls or pip installs.
+Python 3.11+, Windows/macOS/Linux; standard library only. No network calls or pip installs.
 """
 from __future__ import annotations
 
@@ -14,6 +14,8 @@ import sys
 import tempfile
 import zipfile
 
+from harness_core.filesystem import staging_directory
+
 ROOT = Path(__file__).resolve().parent
 NAME = "learning-guide"
 OWNER = "https://github.com/ujjwalk906/learning_harness"
@@ -23,8 +25,6 @@ MARKER = "fieldnotes.json"
 def check_platform():
     if sys.version_info < (3, 11):
         raise ValueError("Fieldnotes needs Python 3.11 or newer. Ask your agent to help install it.")
-    if os.name != "posix":
-        raise ValueError("Use macOS, Linux, or a Linux environment in WSL. Native Windows is not supported.")
 
 
 def payload():
@@ -34,6 +34,7 @@ def payload():
              Path("LICENSE"): ROOT / "LICENSE",
              Path("agents/openai.yaml"): ROOT / "skills/learning-guide/agents/openai.yaml",
              Path("references/contracts.md"): ROOT / "skills/learning-guide/references/contracts.md",
+             Path("references/testing.md"): ROOT / "skills/learning-guide/references/testing.md",
              Path("references/learning-activity.md"): ROOT / "skills/learning-activity/SKILL.md",
              Path("references/learning-research.md"): ROOT / "skills/learning-research/SKILL.md",
              Path("docs/jupyter-ai.md"): ROOT / "docs/jupyter-ai.md"}
@@ -123,7 +124,7 @@ def plan_destination(skills_dir, data_dir, update, name=NAME):
 
 def install(dest, data_dir, plugin=False):
     dest.parent.mkdir(parents=True, exist_ok=True)
-    with tempfile.TemporaryDirectory(prefix=".fieldnotes-install-", dir=dest.parent) as temp:
+    with staging_directory(dest.parent, ".fieldnotes-install-") as temp:
         stage = Path(temp) / NAME
         build(stage, data_dir, plugin=plugin)
         entry = Path("skills") / NAME / "learn.py" if plugin else Path("learn.py")

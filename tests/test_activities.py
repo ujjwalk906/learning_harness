@@ -56,7 +56,7 @@ class ActivityTests(Fixture):
         (bundle / "app.js").write_text("console.log('fixture')")
         result = publish(self.h, "fictional", self.spec(), bundle)
         self.assertIn(b"console.log", read_asset(self.h, "fictional", result["activity"], "app.js"))
-        (bundle / "escape").symlink_to(self.root / "outside")
+        self.symlink(bundle / "escape", self.root / "outside")
         with self.assertRaisesRegex(Invalid, "symbolic links"):
             publish(self.h, "fictional", self.spec(), bundle)
 
@@ -116,7 +116,7 @@ class ActivityTests(Fixture):
         activity = self.activity(suffix=".ipynb", source=json.dumps({"nbformat": 4, "cells": []}))
         python = self.root / "private-venv/bin/python"
         python.parent.mkdir(parents=True)
-        python.symlink_to(sys.executable)
+        self.symlink(python, sys.executable)
         with patch("harness_core.workbench.subprocess.run") as probe:
             probe.return_value.returncode = 1
             with self.assertRaises(Invalid):

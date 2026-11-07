@@ -21,7 +21,10 @@ def run(command, *, input=None, timeout=10, cwd=None):
         try:
             process.communicate(input.encode() if isinstance(input, str) else input, timeout=timeout)
         except subprocess.TimeoutExpired:
-            os.killpg(process.pid, signal.SIGKILL)
+            if os.name == "nt":
+                process.kill()
+            else:
+                os.killpg(process.pid, signal.SIGKILL)
             process.communicate()
             raise
         out.seek(0); err.seek(0)
